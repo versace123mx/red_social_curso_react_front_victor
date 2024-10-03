@@ -1,15 +1,41 @@
 import React from 'react'
 import useForm from '../../hooks/useForm'
+import { addUser } from '../../servicios/ApiRestBlogAxios'
+import {showAlert} from '../../helpers/helpers'
 
 const Register = () => {
 
     const {form,change} = useForm({})
 
-    
-    const handleCrear = (e) => {
+    const handleCrear = async (e) => {
         e.preventDefault()
         let newUser = form
+        
+        if(Object.keys(newUser).length === 0 ){
+            showAlert('Error','Todos los campos son obligatorios','error')
+            return
+        }
+        if(newUser.name == '' || newUser.nick == '' || newUser.email == '' || newUser.password == ''){
+            showAlert('Error','Todos los campos son obligatorios','error')
+            return
+        }
+
+        const result  = await peticionAxios(newUser)
+        if(result.status=='success'){
+            showAlert('Exito',result.msg,'success')
+            return
+        }
+        if(result.status=='error'){
+            showAlert('Error',result.msg,'error')
+            return
+        }
     }
+
+    const peticionAxios = (newUser) => {
+        const adduser = addUser(newUser)
+        return adduser
+    }
+
     return (
         <>
             <header className="content__header">

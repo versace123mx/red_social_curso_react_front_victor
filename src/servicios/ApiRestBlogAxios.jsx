@@ -8,6 +8,18 @@ const cabeceros_upload = {
     'content-type':'multipart/form-data'
 }
 
+
+const addUser = async (data) =>{
+    try {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}user`,data, { headers: cabeceros });
+        return response.data; // Retorna los datos si es necesario
+    } catch (err) {
+        console.log("Fallo la comunicación", err.response ? err.response.data : err);
+        return err.response.data
+    }
+}
+
+
 const getArticulos = async () =>{
     try {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}listar`, { headers: cabeceros });
@@ -75,6 +87,7 @@ const EditArticulo = async (id,data) =>{
     }
 }
 export {
+    addUser,
     getArticulos,
     addArticulo,
     uploadImage,

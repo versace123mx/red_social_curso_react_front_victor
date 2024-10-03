@@ -5,10 +5,6 @@ function App() {
     <div className="layout">
       {/*Cargando la configuracion de rutas*/}
       <Routing />
-
-      <section className="layout__content">
-
-      </section>
     </div>
   )
 }

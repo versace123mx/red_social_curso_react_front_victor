@@ -8,7 +8,7 @@ const cabeceros_upload = {
     'content-type':'multipart/form-data'
 }
 
-
+//Crear un nuevo usuario
 const addUser = async (data) =>{
     try {
         const response = await axios.post(`${import.meta.env.VITE_API_URL}user`,data, { headers: cabeceros });
@@ -19,6 +19,7 @@ const addUser = async (data) =>{
     }
 }
 
+//hacer login
 const loginUser = async (data) =>{
     try {
         const response = await axios.post(`${import.meta.env.VITE_API_URL}login`,data, { headers: cabeceros });
@@ -29,6 +30,7 @@ const loginUser = async (data) =>{
     }
 }
 
+//obteniendo los datos del usuario logueado
 const getDataUserLogin = async (token) =>{
     try {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}profile-user`, { 
@@ -44,6 +46,21 @@ const getDataUserLogin = async (token) =>{
     }
 }
 
+// obteniendo los contadores del usuario logueado
+const getDataCounter = async (token,id='') =>{
+    try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}show-counters/${id}`, { 
+            headers: {
+                'content-type':'application/json',
+                'x-token':token
+            } 
+        });
+        return response.data; // Retorna los datos si es necesario
+    } catch (err) {
+        console.log("Fallo la comunicación", err.response ? err.response.data : err);
+        return err.response.data
+    }
+}
 /*
 const getImageForName = async (name) =>{
     try {
@@ -126,6 +143,9 @@ export {
     addUser,
     loginUser,
     getDataUserLogin,
+    getDataCounter,
+
+    
     getArticulos,
     addArticulo,
     uploadImage,

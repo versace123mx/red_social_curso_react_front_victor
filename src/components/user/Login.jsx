@@ -29,7 +29,6 @@ const Login = () => {
         }
 
         const result = await peticionAxios(login)
-        console.log(result)
         if(result.status=='success'){
             localStorage.setItem('token',JSON.stringify(result.result))
             showAlert('Exito',result.msg,'success')

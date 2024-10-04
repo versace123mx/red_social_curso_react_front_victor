@@ -1,13 +1,18 @@
 import React from 'react'
 import avatar from '../../../assets/img/user.png'
+import useAuth from '../../../hooks/useAuth'
 
 const Sidebar = () => {
+
+    const {auth} = useAuth()//esto lo traemos del hook useAuth que se trae los datos del context
+    console.log(auth)
+    console.log(auth.result[0].name)
     return (
         <>
             <aside className="layout__aside">
 
                 <header className="aside__header">
-                    <h1 className="aside__title">Hola, Victor</h1>
+                    <h1 className="aside__title">Hola, {auth.result[0].name}</h1>
                 </header>
 
                 <div className="aside__container">
@@ -16,12 +21,12 @@ const Sidebar = () => {
 
                         <div className="profile-info__general-info">
                             <div className="general-info__container-avatar">
-                                <img src={avatar} className="container-avatar__img" alt="Foto de perfil" />
+                                <img src={`${import.meta.env.VITE_API_URL}mostrar-imagen-nombre/${auth.result[0].imagen}`} className="container-avatar__img" alt="Foto de perfil" />
                             </div>
 
                             <div className="general-info__container-names">
-                                <a href="#" className="container-names__name">Victor Robles</a>
-                                <p className="container-names__nickname">VictorWeb</p>
+                                <a href="#" className="container-names__name">{auth.result[0].name}</a>
+                                <p className="container-names__nickname">{auth.result[0].surname}</p>
                             </div>
                         </div>
 

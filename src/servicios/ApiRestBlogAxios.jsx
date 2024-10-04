@@ -29,6 +29,32 @@ const loginUser = async (data) =>{
     }
 }
 
+const getDataUserLogin = async (token) =>{
+    try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}profile-user`, { 
+            headers: {
+                'content-type':'application/json',
+                'x-token':token
+            } 
+        });
+        return response.data; // Retorna los datos si es necesario
+    } catch (err) {
+        console.log("Fallo la comunicación", err.response ? err.response.data : err);
+        return err.response.data
+    }
+}
+
+/*
+const getImageForName = async (name) =>{
+    try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}mostrar-imagen-nombre/${name}`, { headers: cabeceros});
+        return response.data; // Retorna los datos si es necesario
+    } catch (err) {
+        console.log("Fallo la comunicación", err.response ? err.response.data : err);
+        return err.response.data
+    }
+}
+*/
 
 const getArticulos = async () =>{
     try {
@@ -99,7 +125,7 @@ const EditArticulo = async (id,data) =>{
 export {
     addUser,
     loginUser,
-    
+    getDataUserLogin,
     getArticulos,
     addArticulo,
     uploadImage,

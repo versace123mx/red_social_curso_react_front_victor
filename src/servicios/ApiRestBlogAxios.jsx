@@ -19,6 +19,16 @@ const addUser = async (data) =>{
     }
 }
 
+const loginUser = async (data) =>{
+    try {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}login`,data, { headers: cabeceros });
+        return response.data; // Retorna los datos si es necesario
+    } catch (err) {
+        console.log("Fallo la comunicación", err.response ? err.response.data : err);
+        return err.response.data
+    }
+}
+
 
 const getArticulos = async () =>{
     try {
@@ -88,6 +98,8 @@ const EditArticulo = async (id,data) =>{
 }
 export {
     addUser,
+    loginUser,
+    
     getArticulos,
     addArticulo,
     uploadImage,

@@ -15,7 +15,7 @@ const addUser = async (data) =>{
         return response.data; // Retorna los datos si es necesario
     } catch (err) {
         console.log("Fallo la comunicación", err.response ? err.response.data : err);
-        return err.response.data
+        return err.response ? err.response.data : {status:'error',msg:err.message}
     }
 }
 
@@ -26,7 +26,7 @@ const loginUser = async (data) =>{
         return response.data; // Retorna los datos si es necesario
     } catch (err) {
         console.log("Fallo la comunicación", err.response ? err.response.data : err);
-        return err.response.data
+        return err.response ? err.response.data : {status:'error',msg:err.message}
     }
 }
 
@@ -42,7 +42,7 @@ const getDataUserLogin = async (token) =>{
         return response.data; // Retorna los datos si es necesario
     } catch (err) {
         console.log("Fallo la comunicación", err.response ? err.response.data : err);
-        return err.response.data
+        return err.response ? err.response.data : {status:'error',msg:err.message}
     }
 }
 
@@ -145,7 +145,7 @@ export {
     getDataUserLogin,
     getDataCounter,
 
-    
+
     getArticulos,
     addArticulo,
     uploadImage,

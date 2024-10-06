@@ -1,20 +1,19 @@
-import React from 'react'
-import avatar from '../../../assets/img/user.png'
+import React, { useEffect } from 'react'
 import useAuth from '../../../hooks/useAuth'
-import Spinner from '../../general/Spinner'
+import Spinner2 from '../../general/Spinner2'
 
 const Sidebar = () => {
 
-    const { auth, isLoading, counter } = useAuth()//esto lo traemos del hook useAuth que se trae los datos del context
+    const { auth, isLoading, setIsLoading, counter } = useAuth()//esto lo traemos del hook useAuth que se trae los datos del context
 
     return (
         <>
-            {isLoading ? <Spinner /> : (
+            {isLoading ? <Spinner2 /> : (
                 <>
 
                     <aside className="layout__aside">
                         <header className="aside__header">
-                            <h1 className="aside__title">Hola, {auth.result[0].name}</h1>
+                            <h1 className="aside__title">Hola, {auth.result && auth.result.length > 0 ? auth.result[0].name : 'no ha cargado bien'}</h1>
                         </header>
 
                         <div className="aside__container">
@@ -23,12 +22,12 @@ const Sidebar = () => {
 
                                 <div className="profile-info__general-info">
                                     <div className="general-info__container-avatar">
-                                        <img src={`${import.meta.env.VITE_API_URL}mostrar-imagen-nombre/${auth.result[0].imagen}`} className="container-avatar__img" alt="Foto de perfil" />
+                                        <img src={auth.result && auth.result.length > 0 ? `${import.meta.env.VITE_API_URL}mostrar-imagen-nombre/${auth.result[0].imagen}` : ''} className="container-avatar__img" alt="Foto de perfil" />
                                     </div>
 
                                     <div className="general-info__container-names">
-                                        <a href="#" className="container-names__name">{auth.result[0].name}</a>
-                                        <p className="container-names__nickname">{auth.result[0].nick}</p>
+                                        <a href="#" className="container-names__name">{auth.result && auth.result.length > 0 ? auth.result[0].name : 'no cargo bien'}</a>
+                                        <p className="container-names__nickname">{auth.result && auth.result.length > 0 ? auth.result[0].nick : 'no cargo bien'}</p>
                                     </div>
                                 </div>
 
@@ -37,13 +36,13 @@ const Sidebar = () => {
                                     <div className="stats__following">
                                         <a href="#" className="following__link">
                                             <span className="following__title">Siguiendo</span>
-                                            <span className="following__number">{counter.result[0].following}</span>
+                                            <span className="following__number">{counter.result && counter.result.length > 0 ? counter.result[0].following : 0}</span>
                                         </a>
                                     </div>
                                     <div className="stats__following">
                                         <a href="#" className="following__link">
                                             <span className="following__title">Seguidores</span>
-                                            <span className="following__number">{counter.result[0].followed}</span>
+                                            <span className="following__number">{counter.result && counter.result.length > 0 ? counter.result[0].followed : 0}</span>
                                         </a>
                                     </div>
 
@@ -51,7 +50,7 @@ const Sidebar = () => {
                                     <div className="stats__following">
                                         <a href="#" className="following__link">
                                             <span className="following__title">Publicaciones</span>
-                                            <span className="following__number">17</span>
+                                            <span className="following__number">{counter.result && counter.result.length > 0 ? counter.result[0].publications : 0}</span>
                                         </a>
                                     </div>
 

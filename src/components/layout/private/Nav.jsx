@@ -1,6 +1,16 @@
 import React from 'react'
 import avatar from '../../../assets/img/user.png'
+import useAuth from '../../../hooks/useAuth'
+
 const Nav = () => {
+
+    const {auth, isLoading, setIsLoading} = useAuth()
+
+    const handlelogout = (e) => {
+        e.preventDefault()
+        localStorage.removeItem('token')
+        setIsLoading(true)//se lo regreso a true ya que es su estado inicial
+    }
     return (
         <nav className="navbar__container-lists">
 
@@ -46,7 +56,7 @@ const Nav = () => {
                     </a>
                 </li>
                 <li className="list-end__item">
-                    <a href="#" className="list-end__link">
+                    <a href="#" className="list-end__link" onClick={handlelogout}>
                         <i className='fa-solid fa-arrow-right-from-bracket'></i>
                         <span className="list-end__name">Cerrar Sesion</span>
                     </a>

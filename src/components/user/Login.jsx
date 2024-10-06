@@ -2,9 +2,13 @@ import React from 'react'
 import useForm from '../../hooks/useForm'
 import {showAlert, expresion_correo} from '../../helpers/helpers'
 import { loginUser } from '../../servicios/ApiRestBlogAxios'
+import { useNavigate } from 'react-router'
+import useAuth from '../../hooks/useAuth'
 
 const Login = () => {
 
+    const { setIsLoading } = useAuth()//este lo utilizo para cuando hago loguin correctamente, entonces le cambio el valor, para que el provider se ejecute de nuevo y cargue los valores necesarios que para ese entonces ya estarian en el localstorage
+    const navigate = useNavigate()
     const {form,change} = useForm({})//Nota: este no es un useState es un hook personalizado
 
     const handleLogin = async (e) => {
@@ -31,7 +35,9 @@ const Login = () => {
         const result = await peticionAxios(login)
         if(result.status=='success'){
             localStorage.setItem('token',JSON.stringify(result.result))
-            showAlert('Exito',result.msg,'success')
+            //showAlert('Exito',result.msg,'success')
+            setIsLoading(false)
+            navigate('/social')
             return
         }
         if(result.status=='error'){

@@ -9,6 +9,7 @@ import './assets/css/styles.css'
 import './assets/css/responsive.css'
 import '../public/css/spinner.css';
 import '../public/css/spinner2.css';
+import '../public/css/spinner_2.css';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

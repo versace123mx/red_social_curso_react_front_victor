@@ -7,6 +7,8 @@ import PrivateLayout from '../components/layout/private/PrivateLayout'
 import Feed from '../components/publication/Feed'
 import Error404 from '../components/layout/public/Error404'
 import { AuthProvider } from '../context/AuthProvider'
+import People from '../components/user/People'
+import EditProfile from '../components/user/EditProfile'
 
 const Routing = () => {
   return (
@@ -23,7 +25,9 @@ const Routing = () => {
           {/**Aqui van las rutas privadas */}
           <Route path='/social' element={<PrivateLayout />}>
             <Route index element={<Feed />} /> {/*Este componente carga al entrar a /social */}
-            <Route path='feet' element={<Feed />} />{/*Este componente carga al entrar a /social/feet */}
+            <Route path='feed' element={<Feed />} />{/*Este componente carga al entrar a /social/feet */}
+            <Route path='people' element={<People />} />
+            <Route path='edition' element={<EditProfile />} />
             <Route path='*' element={<Error404 />} />
           </Route>
 

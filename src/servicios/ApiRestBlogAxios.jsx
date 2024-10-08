@@ -61,6 +61,40 @@ const getDataCounter = async (token,id='') =>{
         return err.response.data
     }
 }
+
+//actualizando los datos del usuario logueado
+const updateDataUser = async (data,token) =>{
+    try {
+        const response = await axios.put(`${import.meta.env.VITE_API_URL}update`, data, { 
+            headers: {
+                'content-type':'application/json',
+                'x-token':token
+            } 
+        });
+        return response.data; // Retorna los datos si es necesario
+    } catch (err) {
+        console.log("Fallo la comunicación", err.response ? err.response.data : err);
+        return err.response ? err.response.data : {status:'error',msg:err.message}
+    }
+}
+
+//update image del usuario logueado
+const updateImageUser = async (data,token) =>{
+    console.log(token)
+    try {
+        const response = await axios.put(`${import.meta.env.VITE_API_URL}update-image`, data, { 
+            headers: {
+                'content-type':'multipart/form-data',
+                'x-token':token
+            } 
+        });
+        return response.data; // Retorna los datos si es necesario
+    } catch (err) {
+        console.log("Fallo la comunicación", err.response ? err.response.data : err);
+        return err.response ? err.response.data : {status:'error',msg:err.message}
+    }
+}
+
 /*
 const getImageForName = async (name) =>{
     try {
@@ -144,6 +178,8 @@ export {
     loginUser,
     getDataUserLogin,
     getDataCounter,
+    updateDataUser,
+    updateImageUser,
 
 
     getArticulos,

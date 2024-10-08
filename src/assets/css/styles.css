@@ -440,3 +440,10 @@ button {
     cursor: pointer;
     font-size: 1.4rem;
 }
+.imgEditProfile{
+    margin-bottom: 15px;
+    height: 150px;
+}
+.spaceButon{
+    margin-bottom: 10px;
+}

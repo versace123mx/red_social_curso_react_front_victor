@@ -5,7 +5,7 @@ import { showAlert } from '../../helpers/helpers'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const UserList = ({usuarios,following,setFollowing}) => {
+const UserList = ({ usuarios, following, setFollowing }) => {
 
     const token = JSON.parse(localStorage.getItem('token'))
     if (!token) {
@@ -13,15 +13,15 @@ const UserList = ({usuarios,following,setFollowing}) => {
         return
     }
 
-    const follow = async (e,id) => {
+    const follow = async (e, id) => {
         e.preventDefault()
         const data = {
-            "idfolow":id
+            "idfolow": id
         }
-        const result = await followingUser( data ,token[0].token )
-        if(result.status == 'success'){
+        const result = await followingUser(data, token[0].token)
+        if (result.status == 'success') {
             setFollowing([
-                ...following,id
+                ...following, id
             ])
 
             //actualizar contadores
@@ -38,7 +38,7 @@ const UserList = ({usuarios,following,setFollowing}) => {
             })
         }
 
-        if(result.status=='error'){
+        if (result.status == 'error') {
             toast.error('🦄 Wow so easy!', {
                 position: "top-right",
                 autoClose: 5000,
@@ -48,22 +48,22 @@ const UserList = ({usuarios,following,setFollowing}) => {
                 draggable: true,
                 progress: undefined,
                 theme: "light",
-                });
+            });
             return
         }
 
     }
 
-    const unfollow = async (e,id)=>{
+    const unfollow = async (e, id) => {
         e.preventDefault()
 
-        const result = await unfollowUser(id,token[0].token)
-        console.log(result)
-        if(result.status == 'success'){
+        const result = await unfollowUser(id, token[0].token)
+        //console.log(result)
+        if (result.status == 'success') {
 
-            const newFollowing = following.filter( following => following != id)
-            console.log('nuevos',newFollowing)
-        
+            const newFollowing = following.filter(following => following != id)
+            //console.log('nuevos', newFollowing)
+
             setFollowing(newFollowing)
 
             //actualizar contadores
@@ -80,7 +80,7 @@ const UserList = ({usuarios,following,setFollowing}) => {
             })
         }
 
-        if(result.status=='error'){
+        if (result.status == 'error') {
             toast.error('🦄 Wow so easy!', {
                 position: "top-right",
                 autoClose: 5000,
@@ -90,7 +90,7 @@ const UserList = ({usuarios,following,setFollowing}) => {
                 draggable: true,
                 progress: undefined,
                 theme: "light",
-                });
+            });
             return
         }
 

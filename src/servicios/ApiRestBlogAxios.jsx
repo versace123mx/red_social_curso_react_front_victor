@@ -148,6 +148,40 @@ const unfollowUser = async (id,token) =>{
 }
 
 
+//metodo para dejar de seguir un usuario
+const userfollowing = async (token,id,pagina) =>{
+
+    try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}follow/following/${id}?pagina=${pagina}`, { 
+            headers: {
+                'content-type':'application/json',
+                'x-token':token
+            } 
+        });
+        return response.data; // Retorna los datos si es necesario
+    } catch (err) {
+        console.log("Fallo la comunicación", err.response ? err.response.data : err);
+        return err.response ? err.response.data : {status:'error',msg:err.message}
+    }
+}
+
+//metodo para dejar de seguir un usuario
+const userfollow = async (token,id,pagina) =>{
+
+    try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}follow/followers/${id}?pagina=${pagina}`, { 
+            headers: {
+                'content-type':'application/json',
+                'x-token':token
+            } 
+        });
+        return response.data; // Retorna los datos si es necesario
+    } catch (err) {
+        console.log("Fallo la comunicación", err.response ? err.response.data : err);
+        return err.response ? err.response.data : {status:'error',msg:err.message}
+    }
+}
+
 /*
 const getImageForName = async (name) =>{
     try {
@@ -236,7 +270,8 @@ export {
     getDataAllUser,
     followingUser,
     unfollowUser,
-
+    userfollowing,
+    userfollow,
 
     getArticulos,
     addArticulo,

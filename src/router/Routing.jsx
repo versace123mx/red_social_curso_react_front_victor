@@ -9,6 +9,8 @@ import Error404 from '../components/layout/public/Error404'
 import { AuthProvider } from '../context/AuthProvider'
 import People from '../components/user/People'
 import EditProfile from '../components/user/EditProfile'
+import Following from '../components/follow/Following'
+import Followers from '../components/follow/Followers'
 
 const Routing = () => {
   return (
@@ -28,6 +30,8 @@ const Routing = () => {
             <Route path='feed' element={<Feed />} />{/*Este componente carga al entrar a /social/feet */}
             <Route path='people' element={<People />} />
             <Route path='edition' element={<EditProfile />} />
+            <Route path='siguiendo/:userid' element={<Following />} />
+            <Route path='seguidores/:userid' element={<Followers />} />
             <Route path='*' element={<Error404 />} />
           </Route>
 

@@ -142,6 +142,7 @@ body {
 .layout__content {
     grid-area: content;
     padding: 0 1.5rem;
+    margin-bottom: 50px;
 }
 
 .content__login {
@@ -264,6 +265,7 @@ body {
     width: 100%;
     display: flex;
     justify-content: center;
+    margin-bottom: 30px;
 }
 
 .content__btn-more-post {

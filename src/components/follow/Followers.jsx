@@ -3,18 +3,18 @@ import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { getDataAllUser, followingUser, unfollowUser } from '../../servicios/ApiRestBlogAxios'
+import { getDataAllUser, followingUser, unfollowUser, userfollow } from '../../servicios/ApiRestBlogAxios'
 import { showAlert } from '../../helpers/helpers'
 import Spinner2 from '../general/Spinner2'
 import useAuth from '../../hooks/useAuth'
-import UserList from './UserList';
+import UserList from '../user/UserList';
 
-const People = () => {
-
+const Followers = () => {
     const [usuarios, setUsuatrios] = useState([]);
     const [pagina, setPagina] = useState(1)
     const [loading, setloading] = useState(true)
     const [following, setFollowing] = useState([])
+    const {userid} = useParams()
 
     const { auth, isLoading, setIsLoading, counter, setCounter } = useAuth()
 
@@ -30,7 +30,20 @@ const People = () => {
 
     const getUsers = async (next) => {
 
-        const data = await getDataAllUser(token[0].token, next);
+        let data = await userfollow(token[0].token, userid, next);
+        //console.log(data)
+
+        //Recorremos y limpiamor el objeto
+        let newObjeto = {
+            ...data,
+            result: data.result.map( valor => ({
+                uid: valor.user._id,
+                ...valor.user
+            }))
+        } 
+        
+        data = newObjeto
+        //console.log(data)
         if (data.status == 'success') {
             let newUsers = data
             //verificamos si en el state usuarios ya hay datos, la primera vez no hay por lo cual no entra en el if
@@ -42,7 +55,7 @@ const People = () => {
             }
             setUsuatrios(newUsers)
             setloading(false)
-            setFollowing(data.user_following)
+            setFollowing(data.following)
         }
 
     };
@@ -88,4 +101,4 @@ const People = () => {
     )
 }
 
-export default People
+export default Followers

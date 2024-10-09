@@ -3,18 +3,17 @@ import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { getDataAllUser, followingUser, unfollowUser } from '../../servicios/ApiRestBlogAxios'
+import { getDataAllUser, followingUser, unfollowUser, userfollowing } from '../../servicios/ApiRestBlogAxios'
 import { showAlert } from '../../helpers/helpers'
 import Spinner2 from '../general/Spinner2'
 import useAuth from '../../hooks/useAuth'
-import UserList from './UserList';
-
-const People = () => {
-
+import UserList from '../user/UserList';
+const Following = () => {
     const [usuarios, setUsuatrios] = useState([]);
     const [pagina, setPagina] = useState(1)
     const [loading, setloading] = useState(true)
     const [following, setFollowing] = useState([])
+    const {userid} = useParams()
 
     const { auth, isLoading, setIsLoading, counter, setCounter } = useAuth()
 
@@ -30,7 +29,20 @@ const People = () => {
 
     const getUsers = async (next) => {
 
-        const data = await getDataAllUser(token[0].token, next);
+        let data = await userfollowing(token[0].token, userid, next);
+       // console.log(data)
+
+        //Recorremos y limpiamor el objeto
+        let newObjeto = {
+            ...data,
+            result: data.result.map( valor => ({
+                uid: valor.followed._id,
+                ...valor.followed
+            }))
+        } 
+        
+        data = newObjeto
+        //console.log(data)
         if (data.status == 'success') {
             let newUsers = data
             //verificamos si en el state usuarios ya hay datos, la primera vez no hay por lo cual no entra en el if
@@ -42,7 +54,7 @@ const People = () => {
             }
             setUsuatrios(newUsers)
             setloading(false)
-            setFollowing(data.user_following)
+            setFollowing(data.following)
         }
 
     };
@@ -63,7 +75,7 @@ const People = () => {
                 <>
                     <ToastContainer />
                     <header className="content__header">
-                        <h1 className="content__title">Gente</h1>
+                        <h1 className="content__title">Usuarios que Sigue</h1>
                     </header>
 
                     <UserList
@@ -88,4 +100,4 @@ const People = () => {
     )
 }
 
-export default People
+export default Following

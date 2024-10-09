@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import useAuth from '../../../hooks/useAuth'
 import Spinner2 from '../../general/Spinner2'
+import { Link } from 'react-router-dom'
 
 const Sidebar = () => {
 
@@ -34,16 +35,16 @@ const Sidebar = () => {
                                 <div className="profile-info__stats">
 
                                     <div className="stats__following">
-                                        <a href="#" className="following__link">
+                                        <Link to={`/social/siguiendo/${auth.result[0].uid}`} className="following__link">
                                             <span className="following__title">Siguiendo</span>
                                             <span className="following__number">{counter.result && counter.result.length > 0 ? counter.result[0].following : 0}</span>
-                                        </a>
+                                        </Link>
                                     </div>
                                     <div className="stats__following">
-                                        <a href="#" className="following__link">
+                                        <Link to={`/social/seguidores/${auth.result[0].uid}`} className="following__link">
                                             <span className="following__title">Seguidores</span>
                                             <span className="following__number">{counter.result && counter.result.length > 0 ? counter.result[0].followed : 0}</span>
-                                        </a>
+                                        </Link>
                                     </div>
 
 

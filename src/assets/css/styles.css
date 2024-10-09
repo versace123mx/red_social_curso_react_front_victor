@@ -447,3 +447,17 @@ button {
 .spaceButon{
     margin-bottom: 10px;
 }
+
+.post__button--green{
+    background-color: var(--color-background-btn-success);
+    margin-right: 3px;
+}
+.post__button--green:hover{
+    background-color: #a2da94;
+}
+.post__button--red{
+    background-color: var(--color-hover-navbar);
+}
+.post__button--red:hover{
+    background-color: rgb(199, 7, 7);
+}

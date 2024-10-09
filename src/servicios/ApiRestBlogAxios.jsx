@@ -80,7 +80,7 @@ const updateDataUser = async (data,token) =>{
 
 //update image del usuario logueado
 const updateImageUser = async (data,token) =>{
-    console.log(token)
+
     try {
         const response = await axios.put(`${import.meta.env.VITE_API_URL}update-image`, data, { 
             headers: {
@@ -98,8 +98,6 @@ const updateImageUser = async (data,token) =>{
 
 //obtener los datos de todos los usuarios menos el usuario logueado
 const getDataAllUser = async (token,pagina) =>{
-
-    console.log(`${import.meta.env.VITE_API_URL}list?pagina=${pagina}`)
     
     try {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}list?pagina=${pagina}`, { 
@@ -114,6 +112,42 @@ const getDataAllUser = async (token,pagina) =>{
         return err.response ? err.response.data : {status:'error',msg:err.message}
     }
 }
+
+
+//metodo para seguir un usuario
+const followingUser = async (data,token) =>{
+    try {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}follow/follow`, data, { 
+            headers: {
+                'content-type':'application/json',
+                'x-token':token
+            } 
+        });
+        return response.data; // Retorna los datos si es necesario
+    } catch (err) {
+        console.log("Fallo la comunicación", err.response ? err.response.data : err);
+        return err.response ? err.response.data : {status:'error',msg:err.message}
+    }
+}
+
+
+//metodo para dejar de seguir un usuario
+const unfollowUser = async (id,token) =>{
+    try {
+        const response = await axios.delete(`${import.meta.env.VITE_API_URL}follow/unfollow/${id}`, { 
+            headers: {
+                'content-type':'application/json',
+                'x-token':token
+            } 
+        });
+        return response.data; // Retorna los datos si es necesario
+    } catch (err) {
+        console.log("Fallo la comunicación", err.response ? err.response.data : err);
+        return err.response ? err.response.data : {status:'error',msg:err.message}
+    }
+}
+
+
 /*
 const getImageForName = async (name) =>{
     try {
@@ -200,6 +234,8 @@ export {
     updateDataUser,
     updateImageUser,
     getDataAllUser,
+    followingUser,
+    unfollowUser,
 
 
     getArticulos,

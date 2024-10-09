@@ -5,7 +5,7 @@ import useAuth from '../../hooks/useAuth'
 
 const EditProfile = () => {
 
-  const { auth, setAuth, isLoading, setIsLoading } = useAuth()
+  const { auth, setIsLoading } = useAuth()
 
     const handleCrear = async (e) => {
         e.preventDefault()

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Profiler } from 'react'
 import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom'
 import PublicLayout from '../components/layout/public/PublicLayout'
 import Login from '../components/user/Login'
@@ -11,6 +11,7 @@ import People from '../components/user/People'
 import EditProfile from '../components/user/EditProfile'
 import Following from '../components/follow/Following'
 import Followers from '../components/follow/Followers'
+import Profile from '../components/user/Profile'
 
 const Routing = () => {
   return (
@@ -32,6 +33,7 @@ const Routing = () => {
             <Route path='edition' element={<EditProfile />} />
             <Route path='siguiendo/:userid' element={<Following />} />
             <Route path='seguidores/:userid' element={<Followers />} />
+            <Route path='profile/:userid' element={<Profile />} />
             <Route path='*' element={<Error404 />} />
           </Route>
 

@@ -91,7 +91,7 @@ const Sidebar = () => {
                                     </div>
 
                                     <div className="general-info__container-names">
-                                        <a href="#" className="container-names__name">{auth.result && auth.result.length > 0 ? auth.result[0].name : 'no cargo bien'}</a>
+                                        <Link to={`profile/${auth.result && auth.result.length > 0 && auth.result[0].uid}`} className="container-names__name">{auth.result && auth.result.length > 0 ? auth.result[0].name : 'no cargo bien'}</Link>
                                         <p className="container-names__nickname">{auth.result && auth.result.length > 0 ? auth.result[0].nick : 'no cargo bien'}</p>
                                     </div>
                                 </div>
@@ -113,10 +113,10 @@ const Sidebar = () => {
 
 
                                     <div className="stats__following">
-                                        <a href="#" className="following__link">
+                                        <Link to={`profile/${auth.result && auth.result.length > 0 && auth.result[0].uid}`} className="following__link">
                                             <span className="following__title">Publicaciones</span>
                                             <span className="following__number">{counter.result && counter.result.length > 0 ? counter.result[0].publications : 0}</span>
-                                        </a>
+                                        </Link>
                                     </div>
 
 

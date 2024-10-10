@@ -1,7 +1,7 @@
 import React from 'react'
 import avatar from '../../../assets/img/user.png'
 import useAuth from '../../../hooks/useAuth'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import Spinner2 from '../../general/Spinner2'
 
 const Nav = () => {
@@ -46,14 +46,14 @@ const Nav = () => {
 
                         <ul className="container-lists__list-end">
                             <li className="list-end__item">
-                                <a href="#" className="list-end__link-image">
+                                <Link to={`profile/${auth.result && auth.result.length > 0 && auth.result[0].uid}`} className="list-end__link-image">
                                     <img src={auth.result && auth.result.length > 0 ? `${import.meta.env.VITE_API_URL}mostrar-imagen-nombre/${auth.result[0].imagen}` : ''} className="list-end__img" alt="Imagen de perfil" />
-                                </a>
+                                </Link>
                             </li>
                             <li className="list-end__item">
-                                <a href="#" className="list-end__link">
+                                <Link to={`profile/${auth.result && auth.result.length > 0 && auth.result[0].uid}`} className="list-end__link">
                                     <span className="list-end__name">{auth.result && auth.result.length > 0 ? auth.result[0].nick : 'no cargo bien'}</span>
-                                </a>
+                                </Link>
                             </li>
                             <li className="list-end__item">
                                 <NavLink to={'edition'} className="list-end__link">

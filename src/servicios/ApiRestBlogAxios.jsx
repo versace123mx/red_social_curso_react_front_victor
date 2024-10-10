@@ -182,6 +182,47 @@ const userfollow = async (token,id,pagina) =>{
     }
 }
 
+//metodo para crear publicacion
+const addNewPublicationUser = async (data,token) =>{
+    try {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}publication/create`, data, { 
+            headers: {
+                'content-type':'application/json',
+                'x-token':token
+            } 
+        });
+        return response.data; // Retorna los datos si es necesario
+    } catch (err) {
+        console.log("Fallo la comunicación", err.response ? err.response.data : err);
+        return err.response ? err.response.data : {status:'error',msg:err.message}
+    }
+}
+
+
+
+
+//update image del usuario logueado
+const updateImagePublication = async (data,token,id) =>{
+
+    try {
+        const response = await axios.put(`${import.meta.env.VITE_API_URL}publication/uploadfile/${id}`, data, { 
+            headers: {
+                'content-type':'multipart/form-data',
+                'x-token':token
+            } 
+        });
+        return response.data; // Retorna los datos si es necesario
+    } catch (err) {
+        console.log("Fallo la comunicación", err.response ? err.response.data : err);
+        return err.response ? err.response.data : {status:'error',msg:err.message}
+    }
+}
+
+
+
+
+
+
 /*
 const getImageForName = async (name) =>{
     try {
@@ -272,6 +313,9 @@ export {
     unfollowUser,
     userfollowing,
     userfollow,
+    addNewPublicationUser,
+    updateImagePublication,
+
 
     getArticulos,
     addArticulo,

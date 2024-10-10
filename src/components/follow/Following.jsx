@@ -42,7 +42,7 @@ const Following = () => {
         } 
         
         data = newObjeto
-        //console.log(data)
+        console.log(data)
         if (data.status == 'success') {
             let newUsers = data
             //verificamos si en el state usuarios ya hay datos, la primera vez no hay por lo cual no entra en el if
@@ -75,7 +75,7 @@ const Following = () => {
                 <>
                     <ToastContainer />
                     <header className="content__header">
-                        <h1 className="content__title">Usuarios que Sigue</h1>
+                        <h1 className="content__title">Usuarios que Sigue {usuarios.nameUser[0].name}</h1>
                     </header>
 
                     <UserList

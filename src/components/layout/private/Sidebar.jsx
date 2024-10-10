@@ -1,12 +1,76 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import useAuth from '../../../hooks/useAuth'
 import Spinner2 from '../../general/Spinner2'
 import { Link } from 'react-router-dom'
+import { showAlert } from '../../../helpers/helpers'
+import { addNewPublicationUser, updateImagePublication } from '../../../servicios/ApiRestBlogAxios'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Sidebar = () => {
 
+    const formRef = useRef(null);
     const { auth, isLoading, setIsLoading, counter } = useAuth()//esto lo traemos del hook useAuth que se trae los datos del context
+    const token = JSON.parse(localStorage.getItem('token'))
+    if (!token) {
+        showAlert('Error', 'No hay Token en la peticion', 'error')
+        return
+    }
 
+    const addPublication = async (e) => {
+        e.preventDefault()
+        const form  = e.target
+        const publicacion = form.post.value
+        const imagen = form.archivo.files[0]
+
+        if(publicacion == ''){
+            showAlert('Error',`El campo (que estas pensando) esta vacio`,'error')
+            return
+        }
+        const data = {
+            publicacion
+        }
+
+        const result = await addNewPublicationUser(data,token[0].token)
+        //console.log(result)//aqui tengo que extraer el id para pasarlo en la carga de la imagen
+        if (result.status == 'success') {
+            if (imagen != null) {
+                //esto ya funciona se utiliza el formData como en postman para mandar los datos, donde archivo es
+                //el valor que requiere el validaro del back para validar que va la imagen y en la variable imagen van los datos de la imagen
+                const formData = new FormData()
+                formData.append('archivo', imagen)
+                const result2 = await updateImagePublication(formData, token[0].token,result.result[0].uid)
+        
+            }
+            toast.success(`🦄 Haz agregado una nueva publicacion`, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            })
+
+            // Resetear el formulario
+            formRef.current.reset();
+        }
+
+        if (result.status == 'error') {
+            toast.error('🦄 Error al Crear la publicación!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            return
+        }
+    }
     return (
         <>
             {isLoading ? <Spinner2 /> : (
@@ -62,7 +126,7 @@ const Sidebar = () => {
 
                             <div className="aside__container-form">
 
-                                <form className="container-form__form-post">
+                                <form className="container-form__form-post" onSubmit={addPublication} ref={formRef}>
 
                                     <div className="form-post__inputs">
                                         <label htmlFor="post" className="form-post__label">¿Que estas pesando hoy?</label>
@@ -70,11 +134,11 @@ const Sidebar = () => {
                                     </div>
 
                                     <div className="form-post__inputs">
-                                        <label htmlFor="image" className="form-post__label">Sube tu foto</label>
-                                        <input type="file" name="image" className="form-post__image" />
+                                        <label htmlFor="archivo" className="form-post__label">Sube tu foto</label>
+                                        <input type="file" name="archivo" className="form-post__image" />
                                     </div>
 
-                                    <input type="submit" value="Enviar" className="form-post__btn-submit" disabled />
+                                    <input type="submit" value="Enviar" className="form-post__btn-submit" />
 
                                 </form>
 

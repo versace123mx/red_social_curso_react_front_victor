@@ -459,7 +459,12 @@ button {
 }
 .post__button--red{
     background-color: var(--color-hover-navbar);
+    padding: 1rem 1.5rem;
+    font-size: 1.4rem;
+    border-radius: 0.4rem solid var(--color-hover-navbar);
+    border: 1px solid #1922a4;
 }
 .post__button--red:hover{
-    background-color: rgb(199, 7, 7);
+    background-color: rgb(173, 54, 54);
+    border: 1px solid rgb(185, 29, 29);
 }

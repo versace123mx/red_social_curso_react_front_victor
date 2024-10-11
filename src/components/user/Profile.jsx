@@ -4,9 +4,11 @@ import { useParams } from 'react-router'
 import { getDataUserForId, getDataCounter } from '../../servicios/ApiRestBlogAxios'
 import Spinner2 from '../general/Spinner2'
 import { Link } from 'react-router-dom'
+import useAuth from '../../hooks/useAuth'
 
 const Profile = () => {
 
+    const { auth, isLoading, setIsLoading, counter, setCounter } = useAuth()
     const [loading, setloading] = useState(true)
     const [user, setUser] = useState()
     const { userid } = useParams()
@@ -20,19 +22,22 @@ const Profile = () => {
 
     useEffect(() => {
 
-        const getDataUser = async (toknen, id) => {
-            const result = await getDataUserForId(token[0].token, userid)
-            if (result.status == 'success') {
-                const contadordeFollows = await getDataCounter(token[0].token, userid)
-                setUser(result.result)
-                setloading(false)
-                setContador(contadordeFollows)
-            }
-        }
-
         getDataUser()
+
     }, [userid])
 
+    const getDataUser = async (toknen, id) => {
+        const result = await getDataUserForId(token[0].token, userid)
+        if (result.status == 'success') {
+            const contadordeFollows = await getDataCounter(token[0].token, userid)
+            setUser(result.result)
+            setloading(false)
+            setContador(contadordeFollows)
+        }
+    }
+
+console.log(auth)
+console.log(user)
     return (
         <>
             {loading ? <Spinner2 /> : (
@@ -76,9 +81,20 @@ const Profile = () => {
                                     <span className="following__number">{contador && contador.result && contador.result.length ? contador.result[0].publications : 0}</span>
                                 </Link>
                             </div>
-                            <div className="stats__following">
-                                <button className="content__button">Seguir</button>
-                            </div>
+                            {user[0].uid != auth.result[0].uid && (
+                                
+                                <div className="stats__following">
+                                {user && user.length && user[2].followe_me.includes(auth.result[0].uid) ? (
+                                    <button className="content__button post__button--red">Dejar de Seguir</button>
+                                ) : (
+                                    <button className="content__button">Seguir</button>
+                                )}
+                                
+                                    
+                                
+                                </div>
+                            )}
+                            
 
                         </div>
                     </div>

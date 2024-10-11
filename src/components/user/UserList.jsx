@@ -104,18 +104,14 @@ const UserList = ({ usuarios, following, setFollowing }) => {
                     <div className="post__container">
 
                         <div className="post__image-user">
-                            <Link to={`/profile/${usuario.uid}`} className="post__image-link">
+                            <Link to={`/social/profile/${usuario.uid}`} className="post__image-link">
                                 <img src={`${import.meta.env.VITE_API_URL}mostrar-imagen-nombre/${usuario.imagen}`} className="post__user-image" alt="Foto de perfil" />
                             </Link>
                         </div>
 
                         <div className="post__body">
-
                             <div className="post__user-info">
-                                <Link to={`/profile/${usuario.uid}`} className="user-info__name">{usuario.name} {usuario.surname}</Link>
-                            </div>
-                            <div className="post__user-info">
-                                <Link to={`/profile/${usuario.uid}`} className="user-info__name">@{usuario.nick}</Link>
+                                <Link to={`/social/profile/${usuario.uid}`} className="user-info__name">@{usuario.nick}</Link>
                             </div>
                             <h4 className="post__content">{usuario.bio}</h4>
 

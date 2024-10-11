@@ -218,7 +218,22 @@ const updateImagePublication = async (data,token,id) =>{
     }
 }
 
+//obtener los datos del usuario por id
+const getDataUserForId = async (token,id) =>{
 
+    try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}profile/${id}`, { 
+            headers: {
+                'content-type':'application/json',
+                'x-token':token
+            } 
+        });
+        return response.data; // Retorna los datos si es necesario
+    } catch (err) {
+        console.log("Fallo la comunicación", err.response ? err.response.data : err);
+        return err.response ? err.response.data : {status:'error',msg:err.message}
+    }
+}
 
 
 
@@ -315,7 +330,7 @@ export {
     userfollow,
     addNewPublicationUser,
     updateImagePublication,
-
+    getDataUserForId,
 
     getArticulos,
     addArticulo,

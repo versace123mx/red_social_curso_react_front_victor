@@ -19,7 +19,7 @@ const Routing = () => {
       <AuthProvider>
         <Routes>
           <Route path='/' element={<PublicLayout />} >{/*Carga la barra de header en todo momento ya que este es el contenedor principal*/}
-            <Route index element={<Login />} />
+            <Route index element={< Login />} />
             <Route path='login' element={<Login />} />
             <Route path='registro' element={<Register />} />
             <Route path='*' element={<Error404 />} />

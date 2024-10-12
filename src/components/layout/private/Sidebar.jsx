@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const Sidebar = () => {
 
     const formRef = useRef(null);
-    const { auth, isLoading, setIsLoading, counter } = useAuth()//esto lo traemos del hook useAuth que se trae los datos del context
+    const { auth, isLoading, setIsLoading, counter, setCounter } = useAuth()//esto lo traemos del hook useAuth que se trae los datos del context
     const token = JSON.parse(localStorage.getItem('token'))
     if (!token) {
         showAlert('Error', 'No hay Token en la peticion', 'error')
@@ -55,6 +55,15 @@ const Sidebar = () => {
 
             // Resetear el formulario
             formRef.current.reset();
+
+            //modificacion del objeto para incrementarlo en 1
+            const newContadorUserLogin = {
+                ...counter,
+                result: counter.result.map((item, index) =>
+                    index === 0 ? { ...item, publications: item.publications + 1 } : item // Modificar solo el primer objeto
+                )
+            }
+            setCounter(newContadorUserLogin)
         }
 
         if (result.status == 'error') {
@@ -71,6 +80,8 @@ const Sidebar = () => {
             return
         }
     }
+
+    console.log('Contador desde sidebar',counter)
     return (
         <>
             {isLoading ? <Spinner2 /> : (

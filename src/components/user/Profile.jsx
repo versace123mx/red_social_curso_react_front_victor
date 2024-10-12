@@ -29,7 +29,7 @@ const Profile = () => {
 
         getDataUser()
         getPublicationUser(1)
-    }, [userid, following])
+    }, [userid, following, counter])
 
     const getDataUser = async (toknen, id) => {
         const result = await getDataUserForId(token[0].token, userid)

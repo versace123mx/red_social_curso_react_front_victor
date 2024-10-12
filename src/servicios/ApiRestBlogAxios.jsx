@@ -238,9 +238,9 @@ const getDataUserForId = async (token,id) =>{
 
 //obtener Publicaciones de usuario por id
 const getPublicationsForId = async (token,id,pagina) =>{
-
+    console.log(`${import.meta.env.VITE_API_URL}publication/show-publications/${id}?pagina=${pagina}`)
     try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}show-publications/${id}?pagina=${pagina}`, { 
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}publication/show-publications/${id}?pagina=${pagina}`, { 
             headers: {
                 'content-type':'application/json',
                 'x-token':token
@@ -253,6 +253,23 @@ const getPublicationsForId = async (token,id,pagina) =>{
     }
 }
 
+
+//obtener imagen por id
+const getImagePublicationForId = async (token,id) =>{
+
+    try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}publication/show-image-publication/${id}`, { 
+            headers: {
+                'content-type':'application/json',
+                'x-token':token
+            } 
+        });
+        return response.data; // Retorna los datos si es necesario
+    } catch (err) {
+        console.log("Fallo la comunicación", err.response ? err.response.data : err);
+        return err.response ? err.response.data : {status:'error',msg:err.message}
+    }
+}
 
 
 
@@ -272,5 +289,6 @@ export {
     addNewPublicationUser,
     updateImagePublication,
     getDataUserForId,
-    getPublicationsForId
+    getPublicationsForId,
+    getImagePublicationForId
 }

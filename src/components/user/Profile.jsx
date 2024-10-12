@@ -215,57 +215,59 @@ const Profile = () => {
 
                         </div>
                     </div>
+                    {publications.length ? (
+                        <>
+                            <div className="content__posts">
+                                {publications.map(publicacion => (
+                                    <article className="posts__post" key={publicacion.uid}>
 
-                    <div className="content__posts">
-                        {publications.map(publicacion => (
-                            <article className="posts__post" key={publicacion.uid}>
+                                        <div className="post__container">
 
-                                <div className="post__container">
+                                            <div className="post__image-user">
+                                                <img src={`${import.meta.env.VITE_API_URL}mostrar-imagen-nombre/${user[0].imagen}`} className="post__user-image" alt="Foto de perfil" />
+                                            </div>
 
-                                    <div className="post__image-user">
-                                        <a href="#" className="post__image-link">
-                                            <img src={`${import.meta.env.VITE_API_URL}publication/show-image-publication/${publicacion.file}`} className="post__user-image" alt="Foto de perfil" />
-                                        </a>
-                                    </div>
+                                            <div className="post__body">
 
-                                    <div className="post__body">
+                                                <div className="post__user-info">
+                                                    <span href="#" className="user-info__name">{user[0].name} {user[0].surnombre}</span>
+                                                    <span className="user-info__divider"> | </span>
+                                                    <a href="#" className="user-info__create-date"><ReactTimeAgo date={Date.parse(publicacion.create_at)} locale="en-GB" /> </a>
+                                                </div>
 
-                                        <div className="post__user-info">
-                                            <a href="#" className="user-info__name">{publicacion.text}</a>
-                                            <span className="user-info__divider"> | </span>
-                                            <a href="#" className="user-info__create-date"><ReactTimeAgo date={Date.parse(publicacion.create_at)} locale="en-GB" /> </a>
+                                                <h4 className="post__content">{publicacion.text}</h4>
+                                                <div className="post__user-image">
+                                                    <img src={`${import.meta.env.VITE_API_URL}publication/show-image-publication/${publicacion.file}`} className="post__user-image" alt="Foto de perfil" />
+                                                </div>
+                                            </div>
+
                                         </div>
 
-                                        <h4 className="post__content">Hola, buenos dias.</h4>
+                                        {auth.result[0].uid === user[0].uid && (
+                                            <div className="post__buttons">
+                                                <a href="#" className="post__button">
+                                                    <i className="fa-solid fa-trash-can"></i>
+                                                </a>
+                                            </div>
+                                        )}
+                                    </article>
+                                ))}
+                            </div>
 
-                                    </div>
+                            <div className="content__container-btn">
+                                <button className="content__btn-more-post">
+                                    Ver mas publicaciones
+                                </button>
+                            </div>
+                        </>
 
-                                </div>
+                    ) : (
+                        <div className="post__container">
+                            No hay publicaciones aun...
+                        </div>
 
-                                {auth.result[0].uid === user[0].uid && (
-                                    <div className="post__buttons">
+                    )}
 
-                                        <a href="#" className="post__button">
-                                            <i className="fa-solid fa-trash-can"></i>
-                                        </a>
-
-                                    </div>
-
-                                )}
-
-
-                            </article>
-
-                        ))}
-
-
-                    </div>
-
-                    <div className="content__container-btn">
-                        <button className="content__btn-more-post">
-                            Ver mas publicaciones
-                        </button>
-                    </div>
 
                 </>
             )}

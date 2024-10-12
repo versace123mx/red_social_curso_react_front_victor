@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import avatar from '../../assets/img/user.png'
 import { useParams } from 'react-router'
-import { getDataUserForId, getDataCounter } from '../../servicios/ApiRestBlogAxios'
+import { getDataUserForId, getDataCounter, followingUser, unfollowUser } from '../../servicios/ApiRestBlogAxios'
 import Spinner2 from '../general/Spinner2'
 import { Link } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Profile = () => {
 
@@ -13,6 +15,7 @@ const Profile = () => {
     const [user, setUser] = useState()
     const { userid } = useParams()
     const [contador, setContador] = useState([])
+    const [following, setFollowing] = useState([])
 
     const token = JSON.parse(localStorage.getItem('token'))
     if (!token) {
@@ -24,7 +27,7 @@ const Profile = () => {
 
         getDataUser()
 
-    }, [userid])
+    }, [userid,following])
 
     const getDataUser = async (toknen, id) => {
         const result = await getDataUserForId(token[0].token, userid)
@@ -36,12 +39,116 @@ const Profile = () => {
         }
     }
 
-console.log(auth)
-console.log(user)
+    const follow = async (e, id) => {
+        e.preventDefault()
+        const data = {
+            "idfolow": id
+        }
+        const result = await followingUser(data, token[0].token)
+        if (result.status == 'success') {
+            setFollowing([
+                ...following, id
+            ])
+
+            //actualizar contadores
+            //setCounter()
+            toast.success(`🦄 Haz seguido al usuario`, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            })
+
+            //modificacion del objeto para incrementarlo en 1
+            const newContadorUserLogin = {
+                ...counter,
+                result: counter.result.map((item, index) => 
+                    index === 0 ? { ...item, following: item.following + 1 } : item // Modificar solo el primer objeto
+                )
+            }
+            setCounter(newContadorUserLogin)
+        }
+
+        if (result.status == 'error') {
+            toast.error('🦄 Wow so easy!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            return
+        }
+
+    }
+
+    const unfollow = async (e, id) => {
+        e.preventDefault()
+
+        const result = await unfollowUser(id, token[0].token)
+        //console.log(result)
+        if (result.status == 'success') {
+
+            const newFollowing = following.filter(following => following != id)
+            //console.log('nuevos', newFollowing)
+
+            setFollowing(newFollowing)
+
+            //actualizar contadores
+            //setCounter()
+            toast.success(`🦄 Haz dejado de seguir al usuario`, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            })
+
+            //modificacion del objeto para incrementarlo en 1
+            const newContadorUserLogin = {
+                ...counter,
+                result: counter.result.map((item, index) => 
+                    index === 0 ? { ...item, following: item.following - 1 } : item // Modificar solo el primer objeto
+                )
+            }
+            setCounter(newContadorUserLogin)
+        }
+
+        if (result.status == 'error') {
+            toast.error('🦄 Wow so easy!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            return
+        }
+
+    }
+
+console.log('desde profile method auth',auth)
+console.log('desde profile method user',user)
+console.log(counter)
+
     return (
         <>
             {loading ? <Spinner2 /> : (
                 <>
+                <ToastContainer />
                     <header className="content__header">
                         <h1 className="content__title">Bienvenid@</h1>
                     </header>
@@ -85,9 +192,9 @@ console.log(user)
                                 
                                 <div className="stats__following">
                                 {user && user.length && user[2].followe_me.includes(auth.result[0].uid) ? (
-                                    <button className="content__button post__button--red">Dejar de Seguir</button>
+                                    <button className="content__button post__button--red" onClick={(e)=>unfollow(e,user[0].uid)}>Dejar de Seguir</button>
                                 ) : (
-                                    <button className="content__button">Seguir</button>
+                                    <button className="content__button" onClick={(e)=> follow(e,user[0].uid)}>Seguir</button>
                                 )}
                                 
                                     

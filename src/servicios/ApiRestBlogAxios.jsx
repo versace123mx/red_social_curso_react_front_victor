@@ -236,86 +236,27 @@ const getDataUserForId = async (token,id) =>{
 }
 
 
+//obtener Publicaciones de usuario por id
+const getPublicationsForId = async (token,id,pagina) =>{
 
-
-/*
-const getImageForName = async (name) =>{
     try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}mostrar-imagen-nombre/${name}`, { headers: cabeceros});
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}show-publications/${id}?pagina=${pagina}`, { 
+            headers: {
+                'content-type':'application/json',
+                'x-token':token
+            } 
+        });
         return response.data; // Retorna los datos si es necesario
     } catch (err) {
         console.log("Fallo la comunicación", err.response ? err.response.data : err);
-        return err.response.data
-    }
-}
-*/
-
-const getArticulos = async () =>{
-    try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}listar`, { headers: cabeceros });
-        return response.data; // Retorna los datos si es necesario
-    } catch (err) {
-        console.log("Fallo la comunicación", err.response ? err.response.data : err);
+        return err.response ? err.response.data : {status:'error',msg:err.message}
     }
 }
 
-const addArticulo = async (data) =>{
-    try {
-        const response = await axios.post(`${import.meta.env.VITE_API_URL}crear`,data, { headers: cabeceros });
-        return response.data; // Retorna los datos si es necesario
-    } catch (err) {
-        console.log("Fallo la comunicación", err.response ? err.response.data : err);
-        return err.response.data
-    }
-}
 
-const uploadImage = async (data,id) =>{
-    try {
-        const response = await axios.put(`${import.meta.env.VITE_API_URL}subir-imagen/${id}`,data, { headers: cabeceros_upload });
-        return response.data; // Retorna los datos si es necesario
-    } catch (err) {
-        console.log("Fallo la comunicación", err.response ? err.response.data : err);
-        return err.response.data
-    }
-}
 
-const deliteArticulo = async (id) =>{
-    try {
-        const response = await axios.delete(`${import.meta.env.VITE_API_URL}deletearticuloforid/${id}`, { headers: cabeceros });
-        return response.data; // Retorna los datos si es necesario
-    } catch (err) {
-        console.log("Fallo la comunicación", err.response ? err.response.data : err);
-        return err.response.data
-    }
-}
 
-const buscaArticulos = async (busqueda) => {
-    try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}buscar/${busqueda}`, { headers: cabeceros });
-        return response.data; // Retorna los datos si es necesario
-    } catch (err) {
-        console.log("Fallo la comunicación", err.response ? err.response.data : err);
-    }
-}
 
-const getArticuloXId = async (id) =>{
-    try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}getarticuloforbyid/${id}`, { headers: cabeceros });
-        return response.data; // Retorna los datos si es necesario
-    } catch (err) {
-        console.log("Fallo la comunicación", err.response ? err.response.data : err);
-    }
-}
-
-const EditArticulo = async (id,data) =>{
-    try {
-        const response = await axios.put(`${import.meta.env.VITE_API_URL}articulo/${id}`,data, { headers: cabeceros });
-        return response.data; // Retorna los datos si es necesario
-    } catch (err) {
-        console.log("Fallo la comunicación", err.response ? err.response.data : err);
-        return err.response.data
-    }
-}
 export {
     addUser,
     loginUser,
@@ -331,12 +272,5 @@ export {
     addNewPublicationUser,
     updateImagePublication,
     getDataUserForId,
-
-    getArticulos,
-    addArticulo,
-    uploadImage,
-    deliteArticulo,
-    buscaArticulos,
-    getArticuloXId,
-    EditArticulo
+    getPublicationsForId
 }

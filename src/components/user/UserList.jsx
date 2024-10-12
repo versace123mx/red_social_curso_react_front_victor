@@ -95,7 +95,7 @@ const UserList = ({ usuarios, following, setFollowing }) => {
         }
 
     }
-
+console.log('desde UserList',following)
     return (
         <div className="content__posts" >
             {usuarios.result.map(usuario => (

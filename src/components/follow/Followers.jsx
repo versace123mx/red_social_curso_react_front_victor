@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useReducer, useRef, useState } from 'react'
 import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
@@ -14,7 +14,8 @@ const Followers = () => {
     const [pagina, setPagina] = useState(1)
     const [loading, setloading] = useState(true)
     const [following, setFollowing] = useState([])
-    const {userid} = useParams()
+    const {userid} = useParams('')
+    const useridRef = useRef(1); // Inicializa con un valor por defecto
 
     const { auth, isLoading, setIsLoading, counter, setCounter } = useAuth()
 
@@ -27,6 +28,13 @@ const Followers = () => {
     useEffect(() => {
         getUsers(1);
     }, [])
+
+    useEffect(() => {
+        setloading(true)
+        setFollowing([])
+        setUsuatrios([])
+        getUsers(1);
+    }, [userid])
 
     const getUsers = async (next) => {
 
@@ -46,8 +54,10 @@ const Followers = () => {
         //console.log(data)
         if (data.status == 'success') {
             let newUsers = data
+            console.log('usuario cargado la primera vez que se ejecute',usuarios)
             //verificamos si en el state usuarios ya hay datos, la primera vez no hay por lo cual no entra en el if
             if (usuarios && usuarios.result && usuarios.result.length >= 1) {
+                console.log('entro en el condicional',usuarios)
                 newUsers = {
                     ...usuarios,//aqui traigo todo el objeto anterior
                     result: [...usuarios.result, ...data.result] //aqui en usuarios.result traigo lo viejo y en data.result traigo lo nuevo
@@ -70,6 +80,7 @@ const Followers = () => {
 
     //console.log(counter)
     //console.log(following)
+    console.log('usuario construido',usuarios)
     return (
         <>
             {loading ? <Spinner2 /> : (

@@ -27,6 +27,13 @@ const Following = () => {
         getUsers(1);
     }, [])
 
+    useEffect(() => {
+        //console.log('se vuelve a ejecutar en folllowing')
+        setloading(true)
+        getUsers(1);
+        setUsuatrios([])
+    }, [userid])
+
     const getUsers = async (next) => {
 
         let data = await userfollowing(token[0].token, userid, next);
@@ -42,7 +49,7 @@ const Following = () => {
         } 
         
         data = newObjeto
-        console.log(data)
+        console.log('Following manda este resultado',data)
         if (data.status == 'success') {
             let newUsers = data
             //verificamos si en el state usuarios ya hay datos, la primera vez no hay por lo cual no entra en el if
@@ -69,13 +76,14 @@ const Following = () => {
 
     //console.log(counter)
     //console.log(following)
+    console.log(usuarios)
     return (
         <>
             {loading ? <Spinner2 /> : (
                 <>
                     <ToastContainer />
                     <header className="content__header">
-                        <h1 className="content__title">Usuarios que Sigue {usuarios.nameUser[0].name}</h1>
+                        <h1 className="content__title">Usuarios que Sigue {usuarios && usuarios.nameUser.length ?usuarios.nameUser[0].name:''}</h1>
                     </header>
 
                     <UserList

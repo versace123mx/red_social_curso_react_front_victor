@@ -20,6 +20,7 @@ const Profile = () => {
     const [following, setFollowing] = useState([])
     const [publications, setPublications] = useState([])
     const [countPublicationfiltro, setCountPublicationfiltro] = useState([])
+    const [pagina, setPagina] = useState(1)
 
     const token = JSON.parse(localStorage.getItem('token'))
     if (!token) {
@@ -147,7 +148,7 @@ const Profile = () => {
     const getPublicationUser = async (pagina) => {
         const result = await getPublicationsForId(token[0].token, userid, pagina)
         if (result.status == 'success') {
-            setPublications(result.result)
+            setPublications(result)
             setCountPublicationfiltro(result)
         }
     }
@@ -185,6 +186,12 @@ const Profile = () => {
         }
     }
 
+    const showMoreUser = () => {
+        let next = pagina + 1
+        setPagina(next)
+        setloading(false)
+        getPublicationUser(next)
+    }
     console.log('desde profile method auth', auth)
     console.log('desde profile method user', user)
     console.log(counter)
@@ -252,10 +259,10 @@ const Profile = () => {
 
                         </div>
                     </div>
-                    {publications.length ? (
+                    {publications.result.length ? (
                         <>
                             <div className="content__posts">
-                                {publications.map(publicacion => (
+                                {publications.result.map(publicacion => (
                                     <article className="posts__post" key={publicacion.uid}>
 
                                         <div className="post__container">
@@ -292,7 +299,7 @@ const Profile = () => {
                             </div>
                             {countPublicationfiltro.totalPaginas > countPublicationfiltro.pagina && (
                                 <div className="content__container-btn">
-                                    <button className="content__btn-more-post">
+                                    <button className="content__btn-more-post" onClick={showMoreUser}>
                                         Ver mas publicaciones
                                     </button>
                                 </div>

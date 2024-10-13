@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import avatar from '../../assets/img/user.png'
 import { useParams } from 'react-router'
-import { getDataUserForId, getDataCounter, followingUser, unfollowUser, getPublicationsForId } from '../../servicios/ApiRestBlogAxios'
+import { getDataUserForId, getDataCounter, followingUser, unfollowUser, getPublicationsForId, deletePublicationForId } from '../../servicios/ApiRestBlogAxios'
 import Spinner2 from '../general/Spinner2'
 import { Link } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ReactTimeAgo from 'react-time-ago'
+import { showAlert, showAlertConfirm } from '../../helpers/helpers'
 
 const Profile = () => {
 
@@ -18,6 +19,7 @@ const Profile = () => {
     const [contador, setContador] = useState([])
     const [following, setFollowing] = useState([])
     const [publications, setPublications] = useState([])
+    const [countPublicationfiltro, setCountPublicationfiltro] = useState([])
 
     const token = JSON.parse(localStorage.getItem('token'))
     if (!token) {
@@ -27,11 +29,11 @@ const Profile = () => {
 
     useEffect(() => {
 
-        getDataUser()
+        getDataUser(token, userid)
         getPublicationUser(1)
     }, [userid, following, counter])
 
-    const getDataUser = async (toknen, id) => {
+    const getDataUser = async (token, userid) => {
         const result = await getDataUserForId(token[0].token, userid)
         if (result.status == 'success') {
             const contadordeFollows = await getDataCounter(token[0].token, userid)
@@ -146,6 +148,40 @@ const Profile = () => {
         const result = await getPublicationsForId(token[0].token, userid, pagina)
         if (result.status == 'success') {
             setPublications(result.result)
+            setCountPublicationfiltro(result)
+        }
+    }
+
+    const handleDelitePublication = async (id) => {
+
+        const result = await showAlertConfirm('Precaución', 'Esta seguro de quere eliminar la publicacion, recuerda que ya no podras recuperarla.', 'error')
+        if (result.isConfirmed) {
+            console.log('confirm')
+
+            const respuesta = await deletePublicationForId(token[0].token, id)
+            if (respuesta.status == 'success') {
+                toast.success(`🦄 El registro ${id} se ha borrado correctamente!`, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                })
+                //modificacion del objeto para decrementarlo en 1
+                const newContadorUserLogin = {
+                    ...counter,
+                    result: counter.result.map((item, index) =>
+                        index === 0 ? { ...item, publications: item.publications - 1 } : item // Modificar solo el primer objeto
+                    )
+                }
+                setCounter(newContadorUserLogin)
+
+            } else {
+                return showAlert('Ops', 'No es posible eliminar el registro en este momento', 'error')
+            }
         }
     }
 
@@ -153,6 +189,7 @@ const Profile = () => {
     console.log('desde profile method user', user)
     console.log(counter)
     console.log('publicaciones', publications)
+    console.log('publicaciones numero', countPublicationfiltro)
 
     return (
         <>
@@ -245,20 +282,22 @@ const Profile = () => {
 
                                         {auth.result[0].uid === user[0].uid && (
                                             <div className="post__buttons">
-                                                <a href="#" className="post__button">
+                                                <button className="post__button" onClick={() => handleDelitePublication(publicacion.uid)}>
                                                     <i className="fa-solid fa-trash-can"></i>
-                                                </a>
+                                                </button>
                                             </div>
                                         )}
                                     </article>
                                 ))}
                             </div>
+                            {countPublicationfiltro.totalPaginas > countPublicationfiltro.pagina && (
+                                <div className="content__container-btn">
+                                    <button className="content__btn-more-post">
+                                        Ver mas publicaciones
+                                    </button>
+                                </div>
+                            )}
 
-                            <div className="content__container-btn">
-                                <button className="content__btn-more-post">
-                                    Ver mas publicaciones
-                                </button>
-                            </div>
                         </>
 
                     ) : (

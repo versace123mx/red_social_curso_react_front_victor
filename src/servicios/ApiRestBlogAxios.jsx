@@ -272,6 +272,23 @@ const getImagePublicationForId = async (token,id) =>{
 }
 
 
+//elimina publicacion del usuario logueado
+const deletePublicationForId = async (token,id) =>{
+
+    try {
+        const response = await axios.delete(`${import.meta.env.VITE_API_URL}publication/delete-publication/${id}`, { 
+            headers: {
+                'content-type':'multipart/form-data',
+                'x-token':token
+            } 
+        });
+        return response.data; // Retorna los datos si es necesario
+    } catch (err) {
+        console.log("Fallo la comunicación", err.response ? err.response.data : err);
+        return err.response ? err.response.data : {status:'error',msg:err.message}
+    }
+}
+
 
 
 export {
@@ -290,5 +307,6 @@ export {
     updateImagePublication,
     getDataUserForId,
     getPublicationsForId,
-    getImagePublicationForId
+    getImagePublicationForId,
+    deletePublicationForId
 }

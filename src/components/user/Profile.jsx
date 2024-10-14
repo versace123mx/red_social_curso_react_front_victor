@@ -146,10 +146,38 @@ const Profile = () => {
     }
 
     const getPublicationUser = async (pagina) => {
+        
         const result = await getPublicationsForId(token[0].token, userid, pagina)
         if (result.status == 'success') {
-            setPublications(result)
-            setCountPublicationfiltro(result)
+            let newPublications =  result
+
+            
+            console.log('primer peticion',publications)
+            if(publications && publications.result && publications.result.length >= 1 && pagina > 1){
+                newPublications = {
+                    ...newPublications,
+                    result:[...publications.result,...result.result]
+                }
+                console.log('segunda peticion',newPublications)
+            }
+
+                /*
+                
+                if(publications && publications.result && publications.result.length >= 1 && pagina > 1){
+                    
+                    const existingIds = new Set(publications.result.map(p => p.uid.toString()));
+                    const filteredNewResults = result.result.filter(post => !existingIds.has(post.uid.toString()));
+                    
+                    newPublications = {
+                        ...newPublications,
+                        result:[...publications.result,...filteredNewResults]
+                    }
+                    console.log('segunda peticion',newPublications)
+                }*/
+            
+            
+            setPublications(newPublications)
+            setCountPublicationfiltro(newPublications)
         }
     }
 
@@ -192,12 +220,14 @@ const Profile = () => {
         setloading(false)
         getPublicationUser(next)
     }
+    /*
     console.log('desde profile method auth', auth)
     console.log('desde profile method user', user)
     console.log(counter)
     console.log('publicaciones', publications)
     console.log('publicaciones numero', countPublicationfiltro)
-
+*/
+console.log('publicaciones numero', countPublicationfiltro)
     return (
         <>
             {loading ? <Spinner2 /> : (

@@ -81,7 +81,7 @@ const Sidebar = () => {
         }
     }
 
-    console.log('Contador desde sidebar',counter)
+    //console.log('Contador desde sidebar',counter)
     return (
         <>
             {isLoading ? <Spinner2 /> : (

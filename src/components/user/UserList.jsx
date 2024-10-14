@@ -1,11 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { getDataAllUser, followingUser, unfollowUser } from '../../servicios/ApiRestBlogAxios'
+import useAuth from '../../hooks/useAuth'
 import { showAlert } from '../../helpers/helpers'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const UserList = ({ usuarios, following, setFollowing }) => {
+
+    const { auth, isLoading, setIsLoading, counter, setCounter } = useAuth()
 
     const token = JSON.parse(localStorage.getItem('token'))
     if (!token) {
@@ -25,7 +28,15 @@ const UserList = ({ usuarios, following, setFollowing }) => {
             ])
 
             //actualizar contadores
-            //setCounter()
+            //modificacion del objeto para incrementarlo en 1
+            const newContadorUserLogin = {
+                ...counter,
+                result: counter.result.map((item, index) =>
+                    index === 0 ? { ...item, following: item.following + 1 } : item // Modificar solo el primer objeto
+                )
+            }
+            setCounter(newContadorUserLogin)
+
             toast.success(`🦄 Haz seguido al usuario`, {
                 position: "top-center",
                 autoClose: 5000,
@@ -66,6 +77,15 @@ const UserList = ({ usuarios, following, setFollowing }) => {
 
             setFollowing(newFollowing)
 
+            //modificacion del objeto para de-incrementarlo en 1
+            const newContadorUserLogin = {
+                ...counter,
+                result: counter.result.map((item, index) =>
+                    index === 0 ? { ...item, following: item.following - 1 } : item // Modificar solo el primer objeto
+                )
+            }
+            setCounter(newContadorUserLogin)
+
             //actualizar contadores
             //setCounter()
             toast.success(`🦄 Haz dejado de seguir al usuario`, {
@@ -95,7 +115,7 @@ const UserList = ({ usuarios, following, setFollowing }) => {
         }
 
     }
-console.log('desde UserList',following)
+
     return (
         <div className="content__posts" >
             {usuarios.result.map(usuario => (
@@ -122,13 +142,14 @@ console.log('desde UserList',following)
 
                     <div className="post__buttons">
 
-                        {!following.includes(usuario.uid) && (
+                        {((!following.includes(usuario.uid) && usuario.uid != auth.result[0].uid) || (!auth.result[1].following.includes(usuario.uid) && usuario.uid != auth.result[0].uid)) && (
                             <a href="#" className="post__button post__button--green" onClick={(e) => follow(e, usuario.uid)}>
                                 seguir
                             </a>
                         )}
 
-                        {following.includes(usuario.uid) && (
+                        {
+                        ((following.includes(usuario.uid) && usuario.uid != auth.result[0].uid) && (auth.result[1].following.includes(usuario.uid))) && (
                             <a href="#" className="post__button post__button--red" onClick={(e) => unfollow(e, usuario.uid)}>
                                 dejar de seguir
                             </a>
